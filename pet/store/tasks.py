@@ -28,7 +28,7 @@ def data_input():
 
     count = 0
     page_number = 1
-    if page_number <= pagination_page_number:
+    while page_number <= pagination_page_number:
         try:
             product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
             page_number += 1
@@ -60,8 +60,8 @@ def data_input():
                         pictures=input_image,
                     )
                     image.save()
-            # else:
-            #     continue
+            else:
+                continue
         except ValueError:
             raise "Data input error!"
         response['status'] = product_response.status_code
