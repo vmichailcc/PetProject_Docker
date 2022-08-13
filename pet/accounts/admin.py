@@ -14,7 +14,7 @@ class OrderInline(admin.TabularInline):
 class CustomUserAdmin(admin.ModelAdmin):
     list_display = ("first_name", "last_name",  "city", "order_count")
     search_fields = ["first_name", "last_name"]
-    fields = ("first_name", "last_name", "city", "block")
+    fields = ("first_name", "last_name", "city", "block", "order_count")
     readonly_fields = ("first_name", "last_name",  "city", "order_count")
     inlines = [
         OrderInline
