@@ -25,7 +25,7 @@ class Product(models.Model):
     main_picture = models.ImageField(
         verbose_name="Головне зображення",
         blank=True,
-        upload_to="uploadphoto/main_picture/"
+        upload_to="uploadphoto/%d%m%Y/"
     )
     main_picture_url = models.URLField(blank=True, null=True)
     options = models.JSONField(verbose_name="Опції", blank=True, null=True)
@@ -34,8 +34,6 @@ class Product(models.Model):
     like = models.IntegerField(verbose_name="Лайк", default=0)
 
     def save(self, *args, **kwargs):
-        print("self.main_picture_url =", self.main_picture_url)
-        print("self.main_picture =", self.main_picture)
         if self.main_picture_url and not self.main_picture:
             img_temp = NamedTemporaryFile(delete=True)
             img_temp.write(urlopen(self.main_picture_url).read())

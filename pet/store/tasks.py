@@ -28,7 +28,7 @@ def data_input():
 
     count = 0
     page_number = 1
-    while page_number <= pagination_page_number:
+    if page_number <= pagination_page_number:
         try:
             product_url = f"http://office.hubber.pro/ru/api/v1/product/index?page={page_number}&limit=100"
             page_number += 1
@@ -46,6 +46,7 @@ def data_input():
                         price=data.get("price"),
                         old_price=data.get("old_price"),
                         availability=data.get("availability"),
+                        main_picture_url=data.get("main_picture"),
                         description=data.get("description"),
                         brand=data.get("brand"),
                         options=data.get("options"),
@@ -53,21 +54,14 @@ def data_input():
                     )
                     product.save()
                     count += 1
-                    print("product.id = ", product.id)
-                    if Product.objects.filter(pk=product.id) == 0:
-                        product = Product(
-                            id=data.get("id"),
-                            main_picture_url=data.get("main_picture"),
-                        )
-                        product.save()
                 for input_image in data.get("pictures"):
                     image = Pictures(
                         pictures_point=product,
                         pictures=input_image,
                     )
                     image.save()
-            else:
-                continue
+            # else:
+            #     continue
         except ValueError:
             raise "Data input error!"
         response['status'] = product_response.status_code
