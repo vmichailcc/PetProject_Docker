@@ -27,19 +27,20 @@ class Product(models.Model):
         blank=True,
         upload_to="uploadphoto/main_picture/"
     )
-    main_picture_url = models.URLField()
+    main_picture_url = models.URLField(blank=True, null=True)
     options = models.JSONField(verbose_name="Опції", blank=True, null=True)
     attributes = models.JSONField(verbose_name="Атрибути", blank=True, null=True)
     card_views = models.IntegerField(verbose_name="Перегляди", default=0)
     like = models.IntegerField(verbose_name="Лайк", default=0)
 
     def save(self, *args, **kwargs):
-        if self.main_picture is None:
-            if self.main_picture_url:
-                img_temp = NamedTemporaryFile(delete=True)
-                img_temp.write(urlopen(self.main_picture_url).read())
-                img_temp.flush()
-                self.main_picture.save(f"image_{self.pk}.jpg", File(img_temp))
+        print("self.main_picture_url =", self.main_picture_url)
+        print("self.main_picture =", self.main_picture)
+        if self.main_picture_url and not self.main_picture:
+            img_temp = NamedTemporaryFile(delete=True)
+            img_temp.write(urlopen(self.main_picture_url).read())
+            img_temp.flush()
+            self.main_picture.save(f"image_{self.pk}.jpg", File(img_temp))
         super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
