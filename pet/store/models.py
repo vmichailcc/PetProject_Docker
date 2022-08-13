@@ -34,11 +34,12 @@ class Product(models.Model):
     like = models.IntegerField(verbose_name="Лайк", default=0)
 
     def save(self, *args, **kwargs):
-        if self.main_picture_url and not self.main_picture:
-            img_temp = NamedTemporaryFile(delete=True)
-            img_temp.write(urlopen(self.main_picture_url).read())
-            img_temp.flush()
-            self.main_picture.save(f"image_{self.pk}.jpg", File(img_temp))
+        if self.main_picture is None:
+            if self.main_picture_url:
+                img_temp = NamedTemporaryFile(delete=True)
+                img_temp.write(urlopen(self.main_picture_url).read())
+                img_temp.flush()
+                self.main_picture.save(f"image_{self.pk}.jpg", File(img_temp))
         super(Product, self).save(*args, **kwargs)
 
     def __str__(self):
@@ -66,9 +67,6 @@ class Pictures(models.Model):
     class Meta:
         verbose_name = "Зображення"
         verbose_name_plural = "Зображення"
-
-    def __str__(self):
-        return self.pictures
 
 
 class ProductComment(models.Model):
