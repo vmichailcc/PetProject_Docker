@@ -89,12 +89,10 @@ class OrderApiView(CreateModelMixin, ListModelMixin, GenericViewSet):
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
             user = self.request.user
-            print("perform_create =", user)
             serializer.save(**{'owner': user})
 
     def get_queryset(self):
         user = self.request.user
-        print(user.pk)
         return Order.objects.filter(owner=user.pk)
 
 
@@ -103,8 +101,8 @@ class OrderDetailApiView(RetrieveModelMixin, GenericViewSet):
     queryset = Order.objects.all()
 
 
-class OrdersView(View):
+class OrderView(View):
     def get(self, request, pk):
-        orders = Order.objects.filter(owner=pk)
+        orders = Order.objects.filter(pk=pk)
         context = {"orders": orders}
         return render(request, "store/orders.html", context)

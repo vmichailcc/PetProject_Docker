@@ -172,7 +172,7 @@ CELERY_BEAT_SCHEDULE = {
     },
     "delete_data": {
         "task": "store.tasks.delete_data",
-        "schedule": crontab(minute=0, hour='1'),
+        "schedule": crontab(minute=0, hour='3'),
     },
 }
 

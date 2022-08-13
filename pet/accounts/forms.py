@@ -45,8 +45,6 @@ class UserLoginForm(AuthenticationForm):
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-        print("username =", username)
-        print("password =", password)
         if username is not None and password:
             self.user_cache = authenticate(
                 self.request,

@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework import routers
 
 from .views import ProductView, ProductDetailView, StoreApiView, CommentApiView, OrderApiView, \
-    ProductDetailApiView, OrderDetailApiView, OrdersView
+    ProductDetailApiView, OrderDetailApiView, OrderView
 
 store_router = routers.SimpleRouter()
 store_router.register('', StoreApiView, basename='store_router')
@@ -22,5 +22,5 @@ order_detail_router.register('', OrderDetailApiView, basename='order_detail_rout
 urlpatterns = [
     path('', ProductView.as_view(), name='index'),
     path("product/<str:pk>", ProductDetailView.as_view(), name="product"),
-    path("orders/<str:pk>/", OrdersView.as_view(), name="orders"),
+    path("orders/<str:pk>/", OrderView.as_view(), name="orders"),
 ]
