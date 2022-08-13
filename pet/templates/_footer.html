@@ -1,0 +1,17 @@
+<div class="container">
+  {% load  static %}
+  <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+    <div class="col-md-4 d-flex align-items-center">
+      <a href="{% url 'index' %}"><img src="{% static 'store/images/eshop.png' %}" width="84"
+   height="50" alt="logo"></a>
+    {% if user.is_authenticated %}
+      <span class="mb-3 mb-md-0 text-muted"><a href="{% url 'profile' %}">{{ user }}</a></span>
+    {% endif %}
+    </div>
+
+    <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
+      <a href="https://github.com/vmichailcc/PetProject_Python_Django_DRF_Celery_Docker.git">Github</a></li>
+
+    </ul>
+  </footer>
+</div>

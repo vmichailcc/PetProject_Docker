@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %} Регістрація {% endblock title %}
+{% block content %}
+<h3>Вітаю, {{ user }}! </h3>
+<a href="{% url 'orders' user.pk %}" >Мої замовлення</a>
+<br>
+<p>Ваші облікові дані:</p>
+<h4>Ім'я: {{ user.first_name }}</h4>
+<h4>Прізвище: {{ user.last_name }}</h4>
+<h4>Місто: {{ user.city }}</h4>
+<h4>Електрона пошта: {{ user.email }}</h4>
+
+<a href="{% url 'update_profile' user.pk %}" >Змінити дані</a>
+
+{% endblock content %}

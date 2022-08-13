@@ -1,0 +1,72 @@
+{% extends  "base.html" %}
+
+
+{% block title %} Home {% endblock title %}
+
+
+{% block content %}
+
+<div class="album py-5 bg-light">
+    <div class="container">
+
+      <div class="row row-cols-3 row-cols-sm-2 row-cols-md-3 g-3">
+
+
+          {% for product in products %}
+
+          <div class="card" style="width: 16rem;">
+              <div style="width: 16rem; margin-left: auto; margin-right: auto">
+                  <a href="{% url 'product' product.id %}">
+                  {% load thumbnail %}
+                <img src="{{ product.main_picture|thumbnail_url:'avatar' }}" alt="" />
+                </a>
+              </div>
+
+            <div class="card-body">
+              <a href="{% url 'product' product.id %}" style="text-decoration: none; color:black">
+                  <h5 class="card-title">{{ product.name|truncatechars_html:75 }}</h5>
+              </a>
+            </div>
+
+            {% if product.price < product.old_price %}
+            <ul class="">
+                <li class="list-group-item" style="text-decoration: line-through; color:#a0a0a0"><h6>{{ product.old_price }} грн.</h6></li>
+                <li class="list-group-item" style="color:red"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% else %}
+            <ul class="">
+              <li class="list-group-item"><h6>&#8194</h6></li>
+              <li class="list-group-item"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% endif %}
+
+          </div>
+
+          {% endfor %}
+
+      </div>
+        <div>
+
+
+<div class="pagination" style="margin-left: auto; margin-right: auto; width: 16em">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; </a>
+            <a href="?page={{ page_obj.previous_page_number }}">попередня</a>
+        {% endif %}
+
+        <span class="current">
+            {{ page_obj.number }} з {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">наступна</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}"> &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+        </div>
+    </div>
+  </div>
+
+{% endblock content %}

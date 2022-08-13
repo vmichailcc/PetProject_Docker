@@ -1,0 +1,117 @@
+{% extends  "base.html" %}
+{% load  static %}
+{% block title %} {{ product.name }} {% endblock title %}
+
+{% block content %}
+<div class="container">
+
+
+<div class="card "  style="max-width: 80%; margin-left: auto; margin-right: auto;">
+  <div class="row g-0">
+      <div >
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner" >
+                  {% for picture in pictures|slice:":1" %}
+                <div class="carousel-item active">
+                  <img src="{{ picture.pictures }}" class="d-block" alt="" width="800">
+                </div>
+                    {% endfor %}
+
+                  {% for picture in pictures|slice:"1:" %}
+                <div class="carousel-item">
+                  <img src="{{ picture.pictures }}" class="d-block" alt="" width="800">
+                </div>
+                  {% endfor %}
+
+
+              </div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+          <h6>Виробник: {{ product.brand }}</h6>
+                  <p class="card-text">
+            {% if product.availability == 1 %}
+                <h6 style="color: green">В наявності</h6>
+            {% else %}
+                <p style="color: red">Не має в наявності</p>
+            {% endif %}
+            </p>
+          {% if product.price < product.old_price %}
+            <ul class=" ">
+                <li class="list-group-item" style="text-decoration: line-through; color:#a0a0a0"><h6>{{ product.old_price }} грн.</h6></li>
+                <li class="list-group-item" style="color:red"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% else %}
+            <ul class="">
+              <li class="list-group-item"><h6>&#8194</h6></li>
+              <li class="list-group-item"><h4>{{ product.price }} грн.</h4></li>
+            </ul>
+            {% endif %}
+
+        <p class="card-text">{{ product.description|safe }}</p>
+          <div>
+
+              {% if product.attributes != None %}
+              <h4>Особливості:</h4>
+                {% for item in product.attributes %}
+                 <ul>{% for key, value in item.items %}
+
+                        {% if key == "name" %}
+                         {{ value }}:
+                        {%endif%}
+                        {% if key == "values" %}
+                            {% for value_data in value %}
+
+                                {% for key, value in value_data.items %}
+                                    {% if key == "value" %}
+                                     {{ value }}
+                                    {%endif%}
+                                {% endfor %}
+                            {% endfor %}
+                        {%endif%}
+                        {% endfor %}
+                 </ul>
+                 {% endfor %}
+              {% endif %}
+          </div>
+
+          <div>
+              <h4>Опції:</h4>
+                 {% for key, value in product.options.items %}
+                    <ul>{{ key }}: {{ value }}</ul>
+                 {% endfor %}
+          </div>
+          <div>
+              <h4>Комментарі:</h4>
+              {% for comment in comments %}
+              <div class="card">
+                  <div class="card-header">
+                    {{ comment.text_author }}:
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">{{ comment.text }}</p>
+                  </div>
+              </div>
+              {% endfor %}
+          </div>
+
+          <div style="text-align: center">
+              <h4>Кількість лайків - {{ product.like }}</h4>
+          </div>
+          <div style="text-align: center">
+              <a href="{% url 'index' %}"  class="card-link">Всі товари</a>
+          </div>
+      </div>
+    </div>
+</div>
+</div>
+{% endblock content %}

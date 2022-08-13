@@ -1,0 +1,41 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:14-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=docker_pet_project
+      - POSTGRES_PASSWORD=docker1pet1project
+      - POSTGRES_DB=docker_pet_project
+
+  redis:
+    image: redis:7-alpine
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/pet
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.dev
+    depends_on:
+      - redis
+      - db
+
+  worker:
+    build: .
+    command: celery -A pet worker -B -l info
+    volumes:
+      - .:/pet
+
+    env_file:
+      - .env.dev
+    depends_on:
+      - web
+      - redis
+
+volumes:
+  postgres_data:

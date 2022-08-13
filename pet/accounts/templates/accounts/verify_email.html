@@ -1,0 +1,7 @@
+{% autoescape off %}
+
+Вітаю! Перейдіть за посиланням для підтвержденя електронної пошти!
+http://{{ domain }}{% url 'verify_email' uidb64=uid token=token %}
+
+
+{% endautoescape %}
